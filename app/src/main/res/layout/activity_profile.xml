@@ -5,41 +5,14 @@
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".Profile.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <!--        Top tool bar      -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout1">
-
-            <include layout="@layout/layout_top_tabs"/>
-
-
-        </RelativeLayout>
-
-
-        <!--        middle section (body)     -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/relativeLayout2"
-            android:layout_below="@+id/relativeLayout1">
-
-            <include layout="@layout/layout_center_viewpager"/>
-
-        </RelativeLayout>
-
-
-        <!--        bottom navigation  -->
+        <include layout="@layout/snippet_top_profilebar"/>
 
         <include layout="@layout/layout_bottom_navigation_view"/>
-
-
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

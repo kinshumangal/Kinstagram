@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kinshu.kinstagram.R;
-import com.kinshu.kinstagram.HomeActivity;
-import com.kinshu.kinstagram.LikesActivity;
-import com.kinshu.kinstagram.ProfileActivity;
-import com.kinshu.kinstagram.SearchActivity;
-import com.kinshu.kinstagram.ShareActivity;
+import com.kinshu.kinstagram.Home.HomeActivity;
+import com.kinshu.kinstagram.Likes.LikesActivity;
+import com.kinshu.kinstagram.Profile.ProfileActivity;
+import com.kinshu.kinstagram.Search.SearchActivity;
+import com.kinshu.kinstagram.Share.ShareActivity;
 
 public class BottomNavigationViewHelper {
 

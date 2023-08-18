@@ -1,4 +1,4 @@
-package com.kinshu.kinstagram;
+package com.kinshu.kinstagram.Search;
 
 import androidx.appcompat.app.AppCompatActivity;
 

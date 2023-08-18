@@ -3,10 +3,15 @@ package com.kinshu.kinstagram.Profile;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.QuickContactBadge;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,28 +30,16 @@ public class ProfileActivity extends AppCompatActivity {
         Toast.makeText(this, "Profile Activity", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.profile_menu, menu);
-        return true;
-    }
 
     private void setupToolBar(){
         Toolbar toolbar = findViewById(R.id.profileToolBar);
         setSupportActionBar(toolbar);
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        ImageView profileMenu = findViewById(R.id.profile_menu);
+        profileMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                Log.d("Kinshu", "clicked item: "+item);
-
-                int id = item.getItemId();
-                if(id == R.id.profileMenu){
-
-                }
-
-                return false;
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, AccountSettingActivity.class);
+                startActivity(intent);
             }
         });
     }

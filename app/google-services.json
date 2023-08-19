@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77711692545",
+    "project_id": "kinstagram-d1020",
+    "storage_bucket": "kinstagram-d1020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77711692545:android:7d47678ab247d6090bc100",
+        "android_client_info": {
+          "package_name": "com.kinshu.kinstagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77711692545-0ip0qkeacpl7c9vpubrmdlvdkbpqugen.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0haFG35eeKSrIlZALTRx-XgCM6SrMil0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77711692545-0ip0qkeacpl7c9vpubrmdlvdkbpqugen.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,10 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:toDegrees="45"
+    android:fromDegrees="315"
+    android:pivotX="50%"
+    android:pivotY="50%">
+
+<vector
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
@@ -10,3 +16,5 @@
       android:fillColor="@android:color/white"
       android:pathData="M2.01,21L23,12 2.01,3 2,10l15,2 -15,2z"/>
 </vector>
+
+</rotate>

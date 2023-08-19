@@ -1,4 +1,4 @@
-package com.kinshu.kinstagram.Home;
+package com.kinshu.kinstagram.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

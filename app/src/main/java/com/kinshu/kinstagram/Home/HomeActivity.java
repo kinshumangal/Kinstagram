@@ -6,13 +6,15 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.kinshu.kinstagram.R;
 import com.kinshu.kinstagram.Utils.BottomNavigationViewHelper;
+import com.kinshu.kinstagram.Utils.SectionsPagerAdaptor;
+import com.kinshu.kinstagram.Utils.UniversalImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -21,9 +23,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initImageLoader();
         setupBottomNavigationVeiw();
         setupViewPager();
+
         Toast.makeText(this, "HomeActivity", Toast.LENGTH_SHORT).show();
+    }
+
+    private void initImageLoader(){
+        UniversalImageLoader universalImageLoader = new UniversalImageLoader(this);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
 
     /**

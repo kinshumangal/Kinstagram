@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         initImageLoader();
         setupBottomNavigationVeiw();
         setupViewPager();
-
+//        mAuth.signOut();
         Toast.makeText(this, "HomeActivity", Toast.LENGTH_SHORT).show();
     }
 
@@ -124,14 +124,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthStateListener);
         checkCurrentUser(mAuth.getCurrentUser());
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         if (mAuthStateListener != null){
             mAuth.removeAuthStateListener(mAuthStateListener);

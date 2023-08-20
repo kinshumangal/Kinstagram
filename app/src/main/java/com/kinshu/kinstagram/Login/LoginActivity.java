@@ -20,10 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kinshu.kinstagram.Home.HomeActivity;
 import com.kinshu.kinstagram.R;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private static final String TAG = "LoginActivity";
     //Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -80,15 +81,29 @@ public class LoginActivity extends AppCompatActivity {
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
                                     if (!task.isSuccessful()) {
                                         Toast.makeText(mContext, "Failed to Authenticate...", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         mPleaseWait.setVisibility(View.GONE);
                                     }
                                     else{
-                                        Toast.makeText(mContext, "Authentication Successful...", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                        mPleaseWait.setVisibility(View.GONE);
+                                        try {
+                                            if (user.isEmailVerified()){
+                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }else {
+                                                Toast.makeText(mContext, "Email is not verified. \ncheck your inbox", Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                mPleaseWait.setVisibility(View.GONE);
+                                                mAuth.signOut();
+                                            }
+
+                                        }catch (NullPointerException e){
+                                            Log.e(TAG, "NullPointerException: "+e.getMessage());
+                                        }
 
                                     }
                                 }
@@ -97,6 +112,24 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        TextView linkSignup = findViewById(R.id.link_signup);
+        linkSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        /**
+         * if the user is logged in then navigate to HomeActivity and call 'finish()'
+         */
+        if (mAuth.getCurrentUser()!=null){
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     /**

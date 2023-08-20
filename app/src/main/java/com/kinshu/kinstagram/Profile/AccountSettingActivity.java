@@ -1,6 +1,7 @@
 package com.kinshu.kinstagram.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         setupSettingsList();
         setupBottomNavigationVeiw();
         setupFragment();
+        getIncomingIntent();
 
 //           Todo: setup back arrow for navigating back to "ProfileActivity"
         ImageView backArrow = findViewById(R.id.backArrow);
@@ -49,6 +51,13 @@ public class AccountSettingActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void getIncomingIntent(){
+        Intent intent = getIntent();
+        if (intent.hasExtra(getString(R.string.calling_activity))){
+            setViewPager(pagerAdaptor.getFragmentNumber(getString(R.string.edit_profile_fragment)));
+        }
     }
 
     private void setViewPager(int fragmentNumber){
@@ -88,4 +97,5 @@ public class AccountSettingActivity extends AppCompatActivity {
         menuItem.setChecked(true);
 
     }
+
 }

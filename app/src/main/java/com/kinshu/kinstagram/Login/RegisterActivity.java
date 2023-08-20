@@ -20,7 +20,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.kinshu.kinstagram.Models.User;
 import com.kinshu.kinstagram.R;
 import com.kinshu.kinstagram.Utils.FirebaseMethods;
 
@@ -106,6 +108,48 @@ public class RegisterActivity extends AppCompatActivity {
     ------------------------------------------------------------------------
      */
 
+
+    /**
+     * Check is @param username already exists in teh database
+     * @param username
+     */
+    private void checkIfUsernameExists(final String username) {
+        Log.d(TAG, "checkIfUsernameExists: Checking if  " + username + " already exists.");
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(getString(R.string.dbname_users))
+                .orderByChild(getString(R.string.field_username))
+                .equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
+                    if (singleSnapshot.exists()){
+                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + singleSnapshot.getValue(User.class).getUsername());
+                        append = myRef.push().getKey().substring(3, 10);
+                        Log.d(TAG, "onDataChange: usrename already exits, appending name "+append);
+                    }
+                }
+
+                String mUsername = "";
+
+                mUsername = username+append;
+
+                //Todo: Add new user to the database
+                firebaseMethods.addNewUser(email, mUsername, "", "","" );
+                Toast.makeText(mContext, "Signup successfull...", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     /**
      * Setup firebase auth object
      */
@@ -126,18 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            // Todo: 1st check: make sure the username is not already in use
-                            if (firebaseMethods.checkIfUserNameExists(username, snapshot)){
-                                append = myRef.push().getKey().substring(3, 10);
-                                Log.d(TAG, "onDataChange: usrename already exits, appending name "+append);
-                            }
-                            username = username+append;
-
-                            //Todo: Add new user to the database
-                            firebaseMethods.addNewUser(email, username, "", "","" );
-                            Toast.makeText(mContext, "Signup successfull...", Toast.LENGTH_SHORT).show();
-                            mAuth.signOut();
-
+                            checkIfUsernameExists(username);
                         }
 
                         @Override

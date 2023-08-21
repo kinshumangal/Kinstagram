@@ -45,6 +45,58 @@ public class FirebaseMethods {
         }
     }
 
+    /**
+     * Update 'user_account_settings' node for the current user
+     * @param displayName
+     * @param website
+     * @param description
+     * @param phoneNumber
+     */
+    public void updateUserAccountSettings(String displayName, String website, String description, long phoneNumber){
+
+        Log.d(TAG, "updateUserAccountSettings: updating user account settings.");
+
+        if(displayName != null){
+            myRef.child(context.getString(R.string.dbname_user_account_settings))
+                    .child(userID)
+                    .child(context.getString(R.string.field_display_name))
+                    .setValue(displayName);
+        }
+
+
+        if(website != null) {
+            myRef.child(context.getString(R.string.dbname_user_account_settings))
+                    .child(userID)
+                    .child(context.getString(R.string.field_website))
+                    .setValue(website);
+        }
+
+        if(description != null) {
+            myRef.child(context.getString(R.string.dbname_user_account_settings))
+                    .child(userID)
+                    .child(context.getString(R.string.field_description))
+                    .setValue(description);
+        }
+
+        if(phoneNumber != 0) {
+            myRef.child(context.getString(R.string.dbname_user_account_settings))
+                    .child(userID)
+                    .child(context.getString(R.string.field_phone_number))
+                    .setValue(phoneNumber);
+
+            myRef.child(context.getString(R.string.dbname_users))
+                    .child(userID)
+                    .child(context.getString(R.string.field_phone_number))
+                    .setValue(phoneNumber);
+        }
+    }
+
+
+
+    /**
+     * update the username in the user's and user_account_settings node
+     * @param username
+     */
     public void updateUsername(String username){
 
         myRef.child(context.getString(R.string.dbname_users))
@@ -57,6 +109,23 @@ public class FirebaseMethods {
                 .child(context.getString(R.string.field_username))
                 .setValue(username);
     }
+
+    /**
+     * update the email in the user's node
+     * @param email
+     */
+    public void updateEmail(String email){
+        Log.d(TAG, "updateEmail: upadting email to: " + email);
+
+        Toast.makeText(context, "updateEmail: upadting email to: " + email, Toast.LENGTH_SHORT).show();
+
+        myRef.child(context.getString(R.string.dbname_users))
+                .child(userID)
+                .child(context.getString(R.string.field_email))
+                .setValue(email);
+
+    }
+
 
 //    public boolean checkIfUserNameExists(String username, DataSnapshot dataSnapshot){
 //        User user = new User();

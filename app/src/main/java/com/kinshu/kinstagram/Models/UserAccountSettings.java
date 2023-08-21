@@ -10,6 +10,7 @@ public class UserAccountSettings {
     private String profile_photo;
     private String username;
     private String website;
+    private long phoneNumber;
 
     public UserAccountSettings(String description, String display_name, long followers,
                                long following, long posts, String profile_photo, String username, String website) {
@@ -25,6 +26,14 @@ public class UserAccountSettings {
 
     public UserAccountSettings() {
 
+    }
+
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getDescription() {

@@ -11,4 +11,14 @@
     <string name="profile_activity">Profile Activity</string>
     <string name="edit_profile_fragment">Edit Profile</string>
     <string name="field_username">username</string>
+    <string name="confirm_password_dialog">ConfirmPasswordDialog</string>
+    <string name="field_email">email</string>
+
+    <string name="field_display_name">display_name</string>
+    <string name="field_website">website</string>
+    <string name="field_description">description</string>
+    <string name="field_phone_number">phone_number</string>
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
+    <string name="open_camera">Open Camera</string>
 </resources>

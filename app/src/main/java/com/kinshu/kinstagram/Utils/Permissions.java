@@ -16,4 +16,24 @@ public class Permissions {
             Manifest.permission.READ_MEDIA_VIDEO,
             Manifest.permission.READ_MEDIA_AUDIO
     };
+
+    public static final String[] CAMERA_PERMISSION = {
+            Manifest.permission.CAMERA
+    };
+
+    public static final String[] WRITE_STORAGE_PERMISSION = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static final String[] READ_STORAGE_PERMISSION = {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };
+
+    public static final String[] READ_MEDIA_IMAGES_PERMISSION = {
+            Manifest.permission.READ_MEDIA_IMAGES
+    };
+    public static final String[] READ_MEDIA_VIDEO_PERMISSION = {
+            Manifest.permission.READ_MEDIA_VIDEO
+    };
+
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class ShareActivity extends AppCompatActivity {
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
 
     private ViewPager viewPager;
+    private Context mContext = ShareActivity.this;
 
     private static final String TAG = "ShareActivity";
 
@@ -38,11 +40,18 @@ public class ShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
         Log.d(TAG, "onCreate: started.");
 
-        if(checkPermissionsArray(Permissions.PERMISSIONS)){
-            setupViewPager();
-        }else{
+
+        setupViewPager();
+
+
+        if (!checkPermissionsArray(Permissions.PERMISSIONS)){
             verifyPermissions(Permissions.PERMISSIONS);
         }
+//        if(checkPermissionsArray(Permissions.PERMISSIONS)){
+//            setupViewPager();
+//        }else{
+//            verifyPermissions(Permissions.PERMISSIONS);
+//        }
 
 
 //        setupBottomNavigationVeiw();
@@ -50,24 +59,20 @@ public class ShareActivity extends AppCompatActivity {
     }
 
 
-//    /**
-//     *      Responsible for adding 3 tabs: Camera, Home, Messages
-//     */
-//    public void setupViewPager(){
-//        SectionsPagerAdaptor adaptor = new SectionsPagerAdaptor(getSupportFragmentManager());
-//        adaptor.addFragment(new CamreaFragment());
-//        adaptor.addFragment(new HomeFragment());
-//        adaptor.addFragment(new MessagesFragment());
-//        ViewPager viewPager = findViewById(R.id.container);
-//        viewPager.setAdapter(adaptor);
-//
-//        TabLayout tabLayout = findViewById(R.id.tabs);
-//        tabLayout.setupWithViewPager(viewPager);
-//
-//        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
-//        tabLayout.getTabAt(1).setIcon(R.drawable.ic_instagram);
-//        tabLayout.getTabAt(2).setIcon(R.drawable.ic_arrow);
-//    }
+    /**
+     * return the current tab number
+     * 0 = GalleryFragment
+     * 1 = PhotoFragment
+     * @return
+     */
+    public int getCurrentTabNumber(){
+
+        return viewPager.getCurrentItem();
+    }
+
+    /**
+     * setup viewpager for manager tabs
+     */
     private void setupViewPager(){
         SectionsPagerAdaptor adapter =  new SectionsPagerAdaptor(getSupportFragmentManager());
         adapter.addFragment(new GalleryFragment());

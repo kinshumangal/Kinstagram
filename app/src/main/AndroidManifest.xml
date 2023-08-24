@@ -6,26 +6,30 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <!-- Required only if your app needs to access images or photos
-         that other apps created. -->
+    <!--
+ Required only if your app needs to access images or photos
+         that other apps created.
+    -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-
-    <!-- Required only if your app needs to access videos
-         that other apps created. -->
+    <!--
+ Required only if your app needs to access videos
+         that other apps created.
+    -->
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-
-    <!-- Required only if your app needs to access audio files
-         that other apps created. -->
+    <!--
+ Required only if your app needs to access audio files
+         that other apps created.
+    -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-
-
 
     <application
         android:allowBackup="true"
@@ -37,6 +41,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InstagramClone"
         tools:targetApi="31">
+        <activity
+            android:name=".Share.NextActivity"
+            android:exported="false" />
         <activity
             android:name=".Profile.ProfileActivity"
             android:exported="false" />
@@ -67,7 +74,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

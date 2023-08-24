@@ -1,5 +1,6 @@
 package com.kinshu.kinstagram.Share;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment {
@@ -42,6 +44,7 @@ public class GalleryFragment extends Fragment {
 
     private ArrayList<String> directories;
     private String mAppend = "file:/";
+    private String mSelectedImage;
 
 
     public GalleryFragment() {
@@ -77,6 +80,10 @@ public class GalleryFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to the final share screen.");
 
+                Intent intent = new Intent(getActivity(), NextActivity.class);
+                intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                startActivity(intent);
+
             }
         });
 
@@ -89,14 +96,23 @@ public class GalleryFragment extends Fragment {
         FilePaths filePaths = new FilePaths();
 
         //check for other folders indide "/storage/emulated/0/pictures"
-        if(FileSearch.getDirectoryPaths(filePaths.PICTURES) != null){
-            directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
+        if(FileSearch.getDirectoryPaths(filePaths.DOWNLOAD) != null){
+
+            directories = FileSearch.getDirectoryPaths(filePaths.DOWNLOAD);
         }
 
-        directories.add(filePaths.CAMERA);
+        ArrayList<String> directoryNames = new ArrayList<>();
+        for(int i = 0; i < directories.size(); i++){
+
+            int index = directories.get(i).lastIndexOf("/");
+            String string = directories.get(i).substring(index).replace("/" ,"");
+            directoryNames.add(string);
+        }
+
+        directories.add(0,filePaths.CAMERA);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, directories);
+                android.R.layout.simple_spinner_item, directoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         directorySpinner.setAdapter(adapter);
 
@@ -106,7 +122,12 @@ public class GalleryFragment extends Fragment {
                 Log.d(TAG, "onItemClick: selected: " + directories.get(position));
 
                 //setup our image grid for the directory chosen
-                setupGridView(directories.get(position));
+                try {
+
+                    setupGridView(directories.get(position));
+                }catch (IndexOutOfBoundsException e){
+                    Log.d(TAG, "onItemSelected: "+e.getMessage());
+                }
             }
 
             @Override
@@ -127,24 +148,43 @@ public class GalleryFragment extends Fragment {
         gridView.setColumnWidth(imageWidth);
 
         //use the grid adapter to adapter the images to gridview
-        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
-        gridView.setAdapter(adapter);
+        try {
+            if (imgURLs.size() == 0){
+                imgURLs.add("kinshu");
+            }
+            GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
+            gridView.setAdapter(adapter);
+
+        }catch (Exception e){
+            Log.d(TAG, "setupGridView: "+e.getMessage());
+        }
 
         //set the first image to be displayed when the activity fragment view is inflated
 
         /**
          * here I'm getting error
          */
-        setImage(imgURLs.get(0), galleryImage, mAppend);
+        try {
+            if (imgURLs.size() == 0){
+                imgURLs.add("image_url_1");
+
+            }
+            setImage(imgURLs.get(0), galleryImage, mAppend);
+            mSelectedImage = imgURLs.get(0);
+        }catch (IndexOutOfBoundsException e){
+            Log.d(TAG, "setupGridView: "+e.getMessage());
+        }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: selected an image: " + imgURLs.get(position));
 
+                mSelectedImage = imgURLs.get(position);
+
                 setImage(imgURLs.get(position), galleryImage, mAppend);
 
-                            }
+            }
         });
 
     }
@@ -179,5 +219,8 @@ public class GalleryFragment extends Fragment {
             }
         });
     }
+
+
+
 
 }

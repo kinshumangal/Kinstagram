@@ -14,9 +14,10 @@ public class FileSearch {
         ArrayList<String> pathArray = new ArrayList<>();
         File file = new File(directory);
         File[] listfiles = file.listFiles();
-        for(int i = 0; i < listfiles.length; i++){
-            if(listfiles[i].isDirectory()){
-                pathArray.add(listfiles[i].getAbsolutePath());
+        assert listfiles != null;
+        for (File listfile : listfiles) {
+            if (listfile.isDirectory()) {
+                pathArray.add(listfile.getAbsolutePath());
             }
         }
         return pathArray;
@@ -38,4 +39,18 @@ public class FileSearch {
         }
         return pathArray;
     }
+
+    private static boolean isImageFile(File file) {
+        String[] imageExtensions = {"jpg", "jpeg", "png", "gif"}; // Add more extensions if needed
+        String fileName = file.getName().toLowerCase();
+
+        for (String extension : imageExtensions) {
+            if (fileName.endsWith(extension)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
 }

@@ -74,6 +74,7 @@ public class GalleryFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
         TextView nextScreen = (TextView) view.findViewById(R.id.tvNext);
         nextScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +89,7 @@ public class GalleryFragment extends Fragment {
         });
 
         init();
+
         return view;
     }
 
@@ -102,14 +104,22 @@ public class GalleryFragment extends Fragment {
         }
 
         ArrayList<String> directoryNames = new ArrayList<>();
+//        directoryNames.add("DCIM");
         for(int i = 0; i < directories.size(); i++){
 
             int index = directories.get(i).lastIndexOf("/");
             String string = directories.get(i).substring(index).replace("/" ,"");
+//            if (string == "DCIM"){
+//                continue;
+//            }
             directoryNames.add(string);
         }
+        directories.add(filePaths.CAMERA);
 
-        directories.add(0,filePaths.CAMERA);
+//        if (directories.contains(filePaths.CAMERA)){
+//            directories.remove(filePaths.CAMERA);
+//        }
+//        directories.add(0,filePaths.CAMERA);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, directoryNames);
@@ -123,13 +133,11 @@ public class GalleryFragment extends Fragment {
 
                 //setup our image grid for the directory chosen
                 try {
-
                     setupGridView(directories.get(position));
                 }catch (IndexOutOfBoundsException e){
                     Log.d(TAG, "onItemSelected: "+e.getMessage());
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -140,8 +148,8 @@ public class GalleryFragment extends Fragment {
     private void setupGridView(String selectedDirectory){
         Log.d(TAG, "setupGridView: directory chosen: " + selectedDirectory);
         final ArrayList<String> imgURLs = FileSearch.getFilePaths(selectedDirectory);
-
         Log.d(TAG, "setupGridView: "+imgURLs.size());
+
         //set the grid column width
         int gridWidth = getResources().getDisplayMetrics().widthPixels;
         int imageWidth = gridWidth/NUM_GRID_COLUMNS;
@@ -150,7 +158,7 @@ public class GalleryFragment extends Fragment {
         //use the grid adapter to adapter the images to gridview
         try {
             if (imgURLs.size() == 0){
-                imgURLs.add("kinshu");
+                imgURLs.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1025px-Cat03.jpg");
             }
             GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
             gridView.setAdapter(adapter);
@@ -166,7 +174,7 @@ public class GalleryFragment extends Fragment {
          */
         try {
             if (imgURLs.size() == 0){
-                imgURLs.add("image_url_1");
+                imgURLs.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1025px-Cat03.jpg");
 
             }
             setImage(imgURLs.get(0), galleryImage, mAppend);
@@ -180,9 +188,9 @@ public class GalleryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: selected an image: " + imgURLs.get(position));
 
-                mSelectedImage = imgURLs.get(position);
-
                 setImage(imgURLs.get(position), galleryImage, mAppend);
+
+                mSelectedImage = imgURLs.get(position);
 
             }
         });

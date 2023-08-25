@@ -9,4 +9,7 @@ public class FilePaths {
     public String DOWNLOAD = ROOT_DIR + "";
     public String CAMERA = ROOT_DIR + "/DCIM";
 
+    public String FIREBASE_IMAGE_STORAGE = "photos/users/";
+
+
 }

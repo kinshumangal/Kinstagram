@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,15 +36,17 @@ public class NextActivity extends AppCompatActivity {
 
     private String mAppend = "file:/";
     private int imageCount = 0;
+    private EditText mCaption;
+    private String imgUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
         firebaseMethods = new FirebaseMethods(NextActivity.this);
+        mCaption = findViewById(R.id.description);
 
         setupFirebaseAuth();
-
 
         ImageView backArrow = findViewById(R.id.ivBackArrow);
 
@@ -55,17 +59,20 @@ public class NextActivity extends AppCompatActivity {
         });
 
         TextView share = findViewById(R.id.tvShare);
+
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to the final share screen.");
 
                 //uplaod the image to firebase
-
-
+                Toast.makeText(NextActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
+                String caption = mCaption.getText().toString();
+                firebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl);
 
             }
         });
+
         setImage();
 
     }
@@ -77,7 +84,8 @@ public class NextActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ImageView image = findViewById(R.id.imageShare);
-        UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.string_share)), image, null, mAppend);
+        imgUrl = intent.getStringExtra(getString(R.string.selected_image));
+        UniversalImageLoader.setImage(imgUrl, image, null, mAppend);
 
 
     }
@@ -135,7 +143,7 @@ public class NextActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-//        mAuth.addAuthStateListener(mAuthStateListener);
+        mAuth.addAuthStateListener(mAuthStateListener);
 
     }
 

@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.kinshu.kinstagram.Profile.AccountSettingActivity;
 import com.kinshu.kinstagram.R;
 import com.kinshu.kinstagram.Utils.FilePaths;
 import com.kinshu.kinstagram.Utils.FileSearch;
@@ -81,9 +82,16 @@ public class GalleryFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to the final share screen.");
 
-                Intent intent = new Intent(getActivity(), NextActivity.class);
-                intent.putExtra(getString(R.string.selected_image), mSelectedImage);
-                startActivity(intent);
+                if(isRootTask()){
+                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getActivity(), AccountSettingActivity.class);
+                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                    intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile_fragment));
+                    startActivity(intent);
+                }
 
             }
         });
@@ -93,6 +101,14 @@ public class GalleryFragment extends Fragment {
         return view;
     }
 
+    private boolean isRootTask(){
+        if(((ShareActivity)getActivity()).getTask() == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     private void init(){
         FilePaths filePaths = new FilePaths();
@@ -133,7 +149,8 @@ public class GalleryFragment extends Fragment {
 
                 //setup our image grid for the directory chosen
                 try {
-                    setupGridView(directories.get(position));
+                    if (directories.size()!=0)
+                        setupGridView(directories.get(position));
                 }catch (IndexOutOfBoundsException e){
                     Log.d(TAG, "onItemSelected: "+e.getMessage());
                 }
@@ -177,7 +194,8 @@ public class GalleryFragment extends Fragment {
                 imgURLs.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1025px-Cat03.jpg");
 
             }
-            setImage(imgURLs.get(0), galleryImage, mAppend);
+            if (imgURLs.size()!=0)
+                setImage(imgURLs.get(0), galleryImage, mAppend);
             mSelectedImage = imgURLs.get(0);
         }catch (IndexOutOfBoundsException e){
             Log.d(TAG, "setupGridView: "+e.getMessage());
@@ -232,3 +250,6 @@ public class GalleryFragment extends Fragment {
 
 
 }
+
+
+

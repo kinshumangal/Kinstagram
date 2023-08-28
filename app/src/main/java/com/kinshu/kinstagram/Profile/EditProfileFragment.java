@@ -1,5 +1,6 @@
 package com.kinshu.kinstagram.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.kinshu.kinstagram.Models.User;
 import com.kinshu.kinstagram.Models.UserAccountSettings;
 import com.kinshu.kinstagram.Models.UserSettings;
 import com.kinshu.kinstagram.R;
+import com.kinshu.kinstagram.Share.ShareActivity;
 import com.kinshu.kinstagram.Utils.FirebaseMethods;
 import com.kinshu.kinstagram.Utils.UniversalImageLoader;
 import com.kinshu.kinstagram.dialogs.ConfirmPasswordDialog;
@@ -46,12 +48,6 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         Log.d(TAG, "onConfirmPassword: got the password: "+ password);
 
         FirebaseUser  user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-// Get auth credentials from the user for re-authentication. The example below shows
-//         email and password credentials but there are multiple possible providers,
-//         such as GoogleAuthProvider or FacebookAuthProvider.
-
 
         AuthCredential credential = EmailAuthProvider
                 .getCredential(mAuth.getCurrentUser().getEmail(), password);
@@ -102,92 +98,6 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
             }
         });
 
-
-
-//        ///////////////////// Prompt the user to re-provide their sign-in credentials
-//        mAuth.getCurrentUser().reauthenticate(credential)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if(task.isSuccessful()){
-//                            Log.d(TAG, "User re-authenticated.");
-//
-//                            ///////////////////////check to see if the email is not already present in the database
-//
-//                            mAuth.fetchSignInMethodsForEmail(mEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-//                                    if (task.isSuccessful()){
-//                                        boolean check =!task.getResult().getSignInMethods().isEmpty();
-//
-//                                        if (!check){
-//                                                //////////////////////the email is available so update it
-//                                            mAuth.getCurrentUser().updateEmail(mEmail.getText().toString())
-//                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                        @Override
-//                                                        public void onComplete(@NonNull Task<Void> task) {
-//                                                            if (task.isSuccessful()) {
-//                                                                Log.d(TAG, "User email address updated.");
-//                                                                Toast.makeText(getActivity(), "email updated", Toast.LENGTH_SHORT).show();
-////                                                                firebaseMethods.updateEmail(mEmail.getText().toString());
-//                                                                }
-//                                                            }
-//                                                    });
-//
-//                                        }
-//                                        else {
-//                                            Toast.makeText(getActivity(),"email alredy exst",Toast.LENGTH_LONG).show();
-//                                        }
-//                                    }
-//                                }
-//                            });
-//
-//
-////                            mAuth.fetchProvidersForEmail(mEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
-////                                @Override
-////                                public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-////                                    if(task.isSuccessful()){
-////                                        try{
-////                                            if(task.getResult().getProviders().size() == 1){
-////                                                Log.d(TAG, "onComplete: that email is already in use.");
-////
-////                                            }
-////                                            else{
-////                                                Log.d(TAG, "onComplete: That email is available.");
-////
-////                                                //////////////////////the email is available so update it
-////                                                mAuth.getCurrentUser().updateEmail(mEmail.getText().toString())
-////                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-////                                                            @Override
-////                                                            public void onComplete(@NonNull Task<Void> task) {
-////                                                                if (task.isSuccessful()) {
-////                                                                    Log.d(TAG, "User email address updated.");
-////                                                                    Toast.makeText(getActivity(), "email updated", Toast.LENGTH_SHORT).show();
-////                                                                    firebaseMethods.updateEmail(mEmail.getText().toString());
-////                                                                }
-////                                                            }
-////                                                        });
-////                                            }
-////                                        }catch (NullPointerException e){
-////                                            Log.e(TAG, "onComplete: NullPointerException: "  +e.getMessage() );
-////                                        }
-////                                    }
-////                                }
-////                            });
-//
-//
-//
-//
-//
-//
-//
-//
-//                        }else{
-//                            Log.d(TAG, "onComplete: re-authentication failed.");
-//                        }
-//
-//                    }
-//                });
     }
 
 
@@ -302,6 +212,16 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         mDescription.setText(settings.getDescription());
         mEmail.setText(userSettings.getUser().getEmail());
         mPhoneNumber.setText(String.valueOf(userSettings.getUser().getPhone_number()));
+
+        mChangeProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: chaning photo");
+                Intent intent = new Intent(getActivity(), ShareActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(intent);
+            }
+        });
 
     }
 

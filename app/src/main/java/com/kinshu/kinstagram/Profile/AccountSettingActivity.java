@@ -3,6 +3,7 @@ package com.kinshu.kinstagram.Profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +21,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kinshu.kinstagram.Home.HomeActivity;
 import com.kinshu.kinstagram.R;
 import com.kinshu.kinstagram.Utils.BottomNavigationViewHelper;
+import com.kinshu.kinstagram.Utils.FirebaseMethods;
 import com.kinshu.kinstagram.Utils.SectionsStatePagerAdaptor;
 
 import java.util.ArrayList;
 
-public class AccountSettingActivity extends AppCompatActivity {
+public class    AccountSettingActivity extends AppCompatActivity {
+    private static final String TAG = "AccountSettingActivity";
     private Context mContext;
     private SectionsStatePagerAdaptor pagerAdaptor;
     private ViewPager mViewPager;
@@ -55,7 +58,18 @@ public class AccountSettingActivity extends AppCompatActivity {
 
     private void getIncomingIntent(){
         Intent intent = getIntent();
-        if (intent.hasExtra(getString(R.string.calling_activity))){
+
+        //if there is an imageUrl attached as an extra, then it was chosen from the gallery/photo fragment
+        if(intent.hasExtra(getString(R.string.selected_image))){
+            Log.d(TAG, "getIncomingIntent: New incoming imgUrl");
+            if(intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile_fragment))){
+
+                //set the new profile picture
+                FirebaseMethods firebaseMethods = new FirebaseMethods(AccountSettingActivity.this);
+                firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
+                        intent.getStringExtra(getString(R.string.selected_image)));
+            }
+        }        if (intent.hasExtra(getString(R.string.calling_activity))){
             setViewPager(pagerAdaptor.getFragmentNumber(getString(R.string.edit_profile_fragment)));
         }
     }
